@@ -1,6 +1,7 @@
 package com.example.audio_player
 
 import android.media.MediaPlayer
+import android.widget.Toast
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -21,6 +22,9 @@ class MainActivity: FlutterActivity(){
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "audioChannal").setMethodCallHandler {
                 call, result ->
             if(call.method == "audioPlayer") {
+                Toast.makeText(this, "Its a toast!", Toast.LENGTH_SHORT).show()
+
+
                 if (!music.isPlaying) {
                     music.start()
 

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -17,7 +19,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 
   static MethodChannel methodChannel = const MethodChannel('audioChannal');
 
-    final playAudioFromAndroid =  methodChannel.invokeMethod('audioPlayer');
+  final playAudioFromAndroid = methodChannel.invokeMethod('audioPlayer');
 
   void updateProgress(double value) {
     setState(() {
@@ -32,7 +34,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       padding: const EdgeInsets.all(8.0),
       child: Column(children: [
         SizedBox(
-          height: Get.height*0.5,
+          height: Get.height * 0.5,
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
@@ -57,18 +59,31 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                     }
                   },
                 ),
+
+
+
+                Obx(() =>
+
                 IconButton(
                   iconSize: 100,
-                  icon: const Icon(
+                  icon:  Icon(
+                    (playerControler.playButton.value == true)?
+                    Icons.pause:
                     Icons.play_arrow,
                   ),
                   onPressed: () {
 
-                    playAudioFromAndroid;
+
+                   if (playerControler.playButton!.value = false){
+                     playerControler.playButton.value == true;
+                     playAudioFromAndroid;
+                   }else{
+                     playerControler.playButton.value == false;
+                   }
 
 
                   },
-                ),
+                ), ),
                 IconButton(
                   iconSize: 100,
                   icon: const Icon(

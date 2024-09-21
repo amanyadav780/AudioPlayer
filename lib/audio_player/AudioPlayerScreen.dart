@@ -63,9 +63,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                     Icons.play_arrow,
                   ),
                   onPressed: () {
-                    if (playerControler.progress < 1.0) {
-                      updateProgress(playerControler.progress + 0.1);
-                    }
+
+                    playAudioFromAndroid;
+
+
                   },
                 ),
                 IconButton(

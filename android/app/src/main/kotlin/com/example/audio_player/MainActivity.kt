@@ -8,8 +8,7 @@ import io.flutter.plugin.common.MethodChannel
 import kotlin.random.Random
 
 
-class MainActivity: FlutterActivity(){
-
+class MainActivity : FlutterActivity() {
 
 
     private lateinit var music: MediaPlayer
@@ -19,22 +18,48 @@ class MainActivity: FlutterActivity(){
         super.configureFlutterEngine(flutterEngine)
 
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "audioChannal").setMethodCallHandler {
-                call, result ->
-            if(call.method == "audioPlayer") {
-                Toast.makeText(this, "Its a toast!", Toast.LENGTH_SHORT).show()
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            "audioChannal"
+        ).setMethodCallHandler { call, result ->
+            if (call.method == "audioPlayed") {
+                val assetPath = call.arguments as String
+                playAudio(assetPath)
+
+            } else if (call.method == "audioStop") {
+
+                pauseAudio()
 
 
-                if (!music.isPlaying) {
-                    music.start()
-
-                }
-            }
-            else {
-
+            } else {
+                Toast.makeText(this, "someThing went wrong", Toast.LENGTH_SHORT).show()
             }
         }
 
+    }
+
+
+    private fun playAudio(assetPath: String) {
+
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+
+
+        val assetFileDescriptor = assets.openFd(assetPath)
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(
+                assetFileDescriptor.fileDescriptor,
+                assetFileDescriptor.startOffset,
+                assetFileDescriptor.length
+            )
+            prepare()
+            start()
+        }
+
+
+        private fun pauseAudio() {
+            mediaPlayer?.pause()
+        }
     }
 
     override fun onDestroy() {
@@ -42,7 +67,7 @@ class MainActivity: FlutterActivity(){
         if (music.isPlaying) {
             music.stop()
         }
-        music.release() // Release the MediaPlayer resources
+        music.release()
     }
 
 }
